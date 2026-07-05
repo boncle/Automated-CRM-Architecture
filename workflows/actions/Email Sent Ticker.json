@@ -1,0 +1,1064 @@
+{
+  "name": "Email Sent Ticker",
+  "nodes": [
+    {
+      "parameters": {
+        "resource": "databasePage",
+        "operation": "update",
+        "pageId": {
+          "__rl": true,
+          "value": "={{ $json.property_related_people }}",
+          "mode": "id"
+        },
+        "propertiesUi": {
+          "propertyValues": [
+            {
+              "key": "Emails sent|number",
+              "numberValue": "={{ $json[\"property_emails_sent\"] }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "1655b6f8-f64b-44ab-8bd3-70d87b8538b7",
+      "name": "Notion",
+      "type": "n8n-nodes-base.notion",
+      "typeVersion": 2,
+      "position": [
+        1344,
+        -144
+      ],
+      "credentials": {
+        "notionApi": {
+          "id": "Czzo7kSR8UMfEhDY",
+          "name": "5Leaf Notion"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "id": "b1d2906f-c571-4add-b2a1-6ad4044864c3",
+      "name": "Execute Workflow Trigger",
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1,
+      "position": [
+        -144,
+        528
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "number": [
+            {
+              "value1": "={{ $json[\"property_emails_sent\"] }}",
+              "operation": "equal"
+            }
+          ]
+        }
+      },
+      "id": "9c443d12-bdf9-476d-9a8a-bc16db80b0b8",
+      "name": "Filter",
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 1,
+      "position": [
+        832,
+        -144
+      ]
+    },
+    {
+      "parameters": {
+        "values": {
+          "number": [
+            {
+              "name": "property_emails_sent",
+              "value": 1
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "f09cc70f-a93f-47d2-934c-cd8451a5fe92",
+      "name": "Set",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 2,
+      "position": [
+        1088,
+        -144
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "number": [
+            {
+              "value1": "={{ $json[\"property_emails_sent\"] }}",
+              "operation": "equal",
+              "value2": 1
+            }
+          ]
+        }
+      },
+      "id": "cfc39e95-8e97-4ed2-9a54-076512bc9cdc",
+      "name": "Filter1",
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 1,
+      "position": [
+        832,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "values": {
+          "number": [
+            {
+              "name": "property_emails_sent",
+              "value": 2
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "2e374697-3526-485b-bdca-5fd592e6c0a5",
+      "name": "Set1",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 2,
+      "position": [
+        1088,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "values": {
+          "number": [
+            {
+              "name": "property_emails_sent",
+              "value": 3
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "9e3a167d-67d0-4202-abc6-ba700eed15da",
+      "name": "Set2",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 2,
+      "position": [
+        1088,
+        144
+      ]
+    },
+    {
+      "parameters": {
+        "values": {
+          "number": [
+            {
+              "name": "property_emails_sent",
+              "value": 4
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "2bbc359b-d801-45de-b473-068d15eac007",
+      "name": "Set3",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 2,
+      "position": [
+        1088,
+        288
+      ]
+    },
+    {
+      "parameters": {
+        "values": {
+          "number": [
+            {
+              "name": "property_emails_sent",
+              "value": 5
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "eb44d343-b078-4cf3-b1af-afad235d9f70",
+      "name": "Set4",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 2,
+      "position": [
+        1088,
+        432
+      ]
+    },
+    {
+      "parameters": {
+        "values": {
+          "number": [
+            {
+              "name": "property_emails_sent",
+              "value": 6
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "afbf5bd4-f518-49f5-9c0f-3dbda0b8d29e",
+      "name": "Set5",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 2,
+      "position": [
+        1088,
+        560
+      ]
+    },
+    {
+      "parameters": {
+        "values": {
+          "number": [
+            {
+              "name": "property_emails_sent",
+              "value": 7
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "12cdb05d-3855-4157-9f15-261e1ba925fc",
+      "name": "Set6",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 2,
+      "position": [
+        1088,
+        704
+      ]
+    },
+    {
+      "parameters": {
+        "values": {
+          "number": [
+            {
+              "name": "property_emails_sent",
+              "value": 8
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "503718e7-3159-450d-b6ef-9ce40c6f06e3",
+      "name": "Set7",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 2,
+      "position": [
+        1088,
+        848
+      ]
+    },
+    {
+      "parameters": {
+        "values": {
+          "number": [
+            {
+              "name": "property_emails_sent",
+              "value": 9
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "14f93561-94d2-41ee-93bc-5468b547766b",
+      "name": "Set8",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 2,
+      "position": [
+        1088,
+        992
+      ]
+    },
+    {
+      "parameters": {
+        "values": {
+          "number": [
+            {
+              "name": "property_emails_sent",
+              "value": 10
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "daaca8cd-126f-470b-89b0-b933e1091432",
+      "name": "Set9",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 2,
+      "position": [
+        1088,
+        1120
+      ]
+    },
+    {
+      "parameters": {
+        "resource": "databasePage",
+        "operation": "update",
+        "pageId": {
+          "__rl": true,
+          "value": "={{ $json.property_related_people }}",
+          "mode": "id"
+        },
+        "propertiesUi": {
+          "propertyValues": [
+            {
+              "key": "Emails sent|number",
+              "numberValue": "={{ $json[\"property_emails_sent\"] }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "d273e089-1060-4cbb-b73e-b200f5a0e1c8",
+      "name": "Notion2",
+      "type": "n8n-nodes-base.notion",
+      "typeVersion": 2,
+      "position": [
+        1344,
+        0
+      ],
+      "credentials": {
+        "notionApi": {
+          "id": "Czzo7kSR8UMfEhDY",
+          "name": "5Leaf Notion"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "databasePage",
+        "operation": "update",
+        "pageId": {
+          "__rl": true,
+          "value": "={{ $json.property_related_people }}",
+          "mode": "id"
+        },
+        "propertiesUi": {
+          "propertyValues": [
+            {
+              "key": "Emails sent|number",
+              "numberValue": "={{ $json[\"property_emails_sent\"] }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "46abd16c-aca1-42b7-9820-335f2fee56b6",
+      "name": "Notion3",
+      "type": "n8n-nodes-base.notion",
+      "typeVersion": 2,
+      "position": [
+        1344,
+        144
+      ],
+      "credentials": {
+        "notionApi": {
+          "id": "Czzo7kSR8UMfEhDY",
+          "name": "5Leaf Notion"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "databasePage",
+        "operation": "update",
+        "pageId": {
+          "__rl": true,
+          "value": "={{ $json.property_related_people }}",
+          "mode": "id"
+        },
+        "propertiesUi": {
+          "propertyValues": [
+            {
+              "key": "Emails sent|number",
+              "numberValue": "={{ $json[\"property_emails_sent\"] }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "48a5b8b5-f3a6-4638-bfb4-03432340d5d9",
+      "name": "Notion4",
+      "type": "n8n-nodes-base.notion",
+      "typeVersion": 2,
+      "position": [
+        1344,
+        288
+      ],
+      "credentials": {
+        "notionApi": {
+          "id": "Czzo7kSR8UMfEhDY",
+          "name": "5Leaf Notion"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "databasePage",
+        "operation": "update",
+        "pageId": {
+          "__rl": true,
+          "value": "={{ $json.property_related_people }}",
+          "mode": "id"
+        },
+        "propertiesUi": {
+          "propertyValues": [
+            {
+              "key": "Emails sent|number",
+              "numberValue": "={{ $json[\"property_emails_sent\"] }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "30784106-f8dd-418b-b94c-99efa5161d79",
+      "name": "Notion5",
+      "type": "n8n-nodes-base.notion",
+      "typeVersion": 2,
+      "position": [
+        1344,
+        432
+      ],
+      "credentials": {
+        "notionApi": {
+          "id": "Czzo7kSR8UMfEhDY",
+          "name": "5Leaf Notion"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "databasePage",
+        "operation": "update",
+        "pageId": {
+          "__rl": true,
+          "value": "={{ $json.property_related_people }}",
+          "mode": "id"
+        },
+        "propertiesUi": {
+          "propertyValues": [
+            {
+              "key": "Emails sent|number",
+              "numberValue": "={{ $json[\"property_emails_sent\"] }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "26fd708e-daf9-4a50-b537-10d1880b32f9",
+      "name": "Notion6",
+      "type": "n8n-nodes-base.notion",
+      "typeVersion": 2,
+      "position": [
+        1344,
+        560
+      ],
+      "credentials": {
+        "notionApi": {
+          "id": "Czzo7kSR8UMfEhDY",
+          "name": "5Leaf Notion"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "databasePage",
+        "operation": "update",
+        "pageId": {
+          "__rl": true,
+          "value": "={{ $json.property_related_people }}",
+          "mode": "id"
+        },
+        "propertiesUi": {
+          "propertyValues": [
+            {
+              "key": "Emails sent|number",
+              "numberValue": "={{ $json[\"property_emails_sent\"] }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "139db536-6643-4de6-bc45-9811d65f6ac0",
+      "name": "Notion7",
+      "type": "n8n-nodes-base.notion",
+      "typeVersion": 2,
+      "position": [
+        1344,
+        704
+      ],
+      "credentials": {
+        "notionApi": {
+          "id": "Czzo7kSR8UMfEhDY",
+          "name": "5Leaf Notion"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "databasePage",
+        "operation": "update",
+        "pageId": {
+          "__rl": true,
+          "value": "={{ $json.property_related_people }}",
+          "mode": "id"
+        },
+        "propertiesUi": {
+          "propertyValues": [
+            {
+              "key": "Emails sent|number",
+              "numberValue": "={{ $json[\"property_emails_sent\"] }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "923268ca-031d-4282-b3d3-99bd5a0ba02c",
+      "name": "Notion8",
+      "type": "n8n-nodes-base.notion",
+      "typeVersion": 2,
+      "position": [
+        1344,
+        848
+      ],
+      "credentials": {
+        "notionApi": {
+          "id": "Czzo7kSR8UMfEhDY",
+          "name": "5Leaf Notion"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "databasePage",
+        "operation": "update",
+        "pageId": {
+          "__rl": true,
+          "value": "={{ $json.property_related_people }}",
+          "mode": "id"
+        },
+        "propertiesUi": {
+          "propertyValues": [
+            {
+              "key": "Emails sent|number",
+              "numberValue": "={{ $json[\"property_emails_sent\"] }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "873eff06-dbc4-41b3-95c8-2980839fbb2f",
+      "name": "Notion9",
+      "type": "n8n-nodes-base.notion",
+      "typeVersion": 2,
+      "position": [
+        1344,
+        992
+      ],
+      "credentials": {
+        "notionApi": {
+          "id": "Czzo7kSR8UMfEhDY",
+          "name": "5Leaf Notion"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "databasePage",
+        "operation": "update",
+        "pageId": {
+          "__rl": true,
+          "value": "={{ $json.property_related_people }}",
+          "mode": "id"
+        },
+        "propertiesUi": {
+          "propertyValues": [
+            {
+              "key": "Emails sent|number",
+              "numberValue": "={{ $json[\"property_emails_sent\"] }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "9d01e501-eae3-4c55-8ad5-337b64e6eb0f",
+      "name": "Notion10",
+      "type": "n8n-nodes-base.notion",
+      "typeVersion": 2,
+      "position": [
+        1344,
+        1120
+      ],
+      "credentials": {
+        "notionApi": {
+          "id": "Czzo7kSR8UMfEhDY",
+          "name": "5Leaf Notion"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "number": [
+            {
+              "value1": "={{ $json[\"property_emails_sent\"] }}",
+              "operation": "equal",
+              "value2": 2
+            }
+          ]
+        }
+      },
+      "id": "6ad3f95a-8513-4065-9ceb-2166cb66a38c",
+      "name": "Filter2",
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 1,
+      "position": [
+        832,
+        144
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "number": [
+            {
+              "value1": "={{ $json[\"property_emails_sent\"] }}",
+              "operation": "equal",
+              "value2": 3
+            }
+          ]
+        }
+      },
+      "id": "17ae6bd2-7630-46f9-a12e-d971536e7ab5",
+      "name": "Filter3",
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 1,
+      "position": [
+        832,
+        288
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "number": [
+            {
+              "value1": "={{ $json[\"property_emails_sent\"] }}",
+              "operation": "equal",
+              "value2": 4
+            }
+          ]
+        }
+      },
+      "id": "b139dc72-df52-49e3-be0f-d9fe38d1dd05",
+      "name": "Filter4",
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 1,
+      "position": [
+        832,
+        432
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "number": [
+            {
+              "value1": "={{ $json[\"property_emails_sent\"] }}",
+              "operation": "equal",
+              "value2": 5
+            }
+          ]
+        }
+      },
+      "id": "5fe079a2-38a1-41c5-a622-972f5601e0e9",
+      "name": "Filter5",
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 1,
+      "position": [
+        832,
+        560
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "number": [
+            {
+              "value1": "={{ $json[\"property_emails_sent\"] }}",
+              "operation": "equal",
+              "value2": 6
+            }
+          ]
+        }
+      },
+      "id": "c44731aa-ab97-4490-b49c-c64bd30a4cff",
+      "name": "Filter6",
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 1,
+      "position": [
+        832,
+        704
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "number": [
+            {
+              "value1": "={{ $json[\"property_emails_sent\"] }}",
+              "operation": "equal",
+              "value2": 7
+            }
+          ]
+        }
+      },
+      "id": "57fa0f4e-2d13-4c25-9b46-05cf908d91f9",
+      "name": "Filter7",
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 1,
+      "position": [
+        832,
+        848
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "number": [
+            {
+              "value1": "={{ $json[\"property_emails_sent\"] }}",
+              "operation": "equal",
+              "value2": 9
+            }
+          ]
+        }
+      },
+      "id": "c552f789-8427-4b22-8429-b3f9878bd299",
+      "name": "Filter8",
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 1,
+      "position": [
+        832,
+        992
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "number": [
+            {
+              "value1": "={{ $json[\"property_emails_sent\"] }}",
+              "operation": "equal",
+              "value2": 10
+            }
+          ]
+        }
+      },
+      "id": "ba08c0ec-3d1e-4f81-add1-2a2d5762ac6c",
+      "name": "Filter9",
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 1,
+      "position": [
+        832,
+        1120
+      ]
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Execute Workflow Trigger": {
+      "main": [
+        [
+          {
+            "node": "Filter",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Filter1",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Filter2",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Filter3",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Filter4",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Filter5",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Filter6",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Filter7",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Filter8",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Filter9",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter": {
+      "main": [
+        [
+          {
+            "node": "Set",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set": {
+      "main": [
+        [
+          {
+            "node": "Notion",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter1": {
+      "main": [
+        [
+          {
+            "node": "Set1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set1": {
+      "main": [
+        [
+          {
+            "node": "Notion2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set2": {
+      "main": [
+        [
+          {
+            "node": "Notion3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set3": {
+      "main": [
+        [
+          {
+            "node": "Notion4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set4": {
+      "main": [
+        [
+          {
+            "node": "Notion5",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set5": {
+      "main": [
+        [
+          {
+            "node": "Notion6",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set6": {
+      "main": [
+        [
+          {
+            "node": "Notion7",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set7": {
+      "main": [
+        [
+          {
+            "node": "Notion8",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set8": {
+      "main": [
+        [
+          {
+            "node": "Notion9",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set9": {
+      "main": [
+        [
+          {
+            "node": "Notion10",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter2": {
+      "main": [
+        [
+          {
+            "node": "Set2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter3": {
+      "main": [
+        [
+          {
+            "node": "Set3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter4": {
+      "main": [
+        [
+          {
+            "node": "Set4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter5": {
+      "main": [
+        [
+          {
+            "node": "Set5",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter6": {
+      "main": [
+        [
+          {
+            "node": "Set6",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter7": {
+      "main": [
+        [
+          {
+            "node": "Set7",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter8": {
+      "main": [
+        [
+          {
+            "node": "Set8",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter9": {
+      "main": [
+        [
+          {
+            "node": "Set9",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "61aee904-3593-4f12-b0f9-a0cc79af5913",
+  "meta": {
+    "instanceId": "3adfecd70950b13f28ed03d4a73be90a3890254a7232b5d00e30c7f590681e17"
+  },
+  "id": "KECq2MkS7xe1tyk9",
+  "tags": []
+}

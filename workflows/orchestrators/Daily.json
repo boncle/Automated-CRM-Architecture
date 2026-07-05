@@ -1,0 +1,140 @@
+{
+  "name": "Daily",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "cronExpression",
+              "expression": "26 19 14 5 2"
+            }
+          ]
+        }
+      },
+      "id": "0d1843c0-cce1-4f68-b92c-40b6d33d9f10",
+      "name": "Daily (5Leaf Automated Emails (Morning))",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        0,
+        448
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "delete",
+        "workflowId": {
+          "__rl": true,
+          "value": "={{ $json[\"workflowId\"] }}",
+          "mode": "id"
+        },
+        "requestOptions": {}
+      },
+      "id": "65598439-e971-4822-909f-01762a7f64a8",
+      "name": "n8n1",
+      "type": "n8n-nodes-base.n8n",
+      "typeVersion": 1,
+      "position": [
+        368,
+        640
+      ],
+      "credentials": {
+        "n8nApi": {
+          "id": "eA5g6LzOnAqACmSw",
+          "name": "n8n account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "path": "66218e14-de48-4fbe-81c3-8d2584617b48",
+        "options": {}
+      },
+      "id": "c122d18d-673b-45fb-8920-0bda51df49d2",
+      "name": "Webhook1",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        0,
+        640
+      ],
+      "webhookId": "66218e14-de48-4fbe-81c3-8d2584617b48"
+    },
+    {
+      "parameters": {
+        "workflowId": "AmzISG9mDgOTpSRH",
+        "options": {}
+      },
+      "id": "afd6a323-244c-4823-bb79-11c6c705c999",
+      "name": "Execute Workflow1",
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1,
+      "position": [
+        192,
+        448
+      ],
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "jsCode": "// Retrieve the workflow ID from the environment\nconst workflowId = $workflow.id;\n\n// Construct the payload with the workflow ID\nconst payload = {\n  workflowId: workflowId\n};\n\n// Set the payload to a variable\nreturn [\n  {\n    json: payload\n  }\n];"
+      },
+      "id": "efff99c3-62b6-4c5e-9071-9cf1ee81f6c5",
+      "name": "Code1",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        192,
+        640
+      ]
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Daily (5Leaf Automated Emails (Morning))": {
+      "main": [
+        [
+          {
+            "node": "Execute Workflow1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code1": {
+      "main": [
+        [
+          {
+            "node": "n8n1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook1": {
+      "main": [
+        [
+          {
+            "node": "Code1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "dc141b3c-eda1-4d95-943b-a92598a8bac9",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "3adfecd70950b13f28ed03d4a73be90a3890254a7232b5d00e30c7f590681e17"
+  },
+  "id": "GbM5O7cwW17nTQwU",
+  "tags": []
+}

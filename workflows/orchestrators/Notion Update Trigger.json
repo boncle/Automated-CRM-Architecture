@@ -1,0 +1,616 @@
+{
+  "name": "Notion Update Trigger",
+  "nodes": [
+    {
+      "parameters": {
+        "workflowId": "fZfffYwnyyuLLd8E",
+        "options": {}
+      },
+      "id": "ec1f2083-50d2-417c-91bf-913a6046a985",
+      "name": "Execute Workflow",
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1,
+      "position": [
+        2528,
+        832
+      ]
+    },
+    {
+      "parameters": {
+        "mode": "chooseBranch",
+        "output": "empty"
+      },
+      "id": "238e296a-20e3-4040-a0d8-6954f404754d",
+      "name": "Merge",
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 2.1,
+      "position": [
+        1040,
+        832
+      ]
+    },
+    {
+      "parameters": {},
+      "id": "a767c385-558c-49c5-b368-94e019ca47a7",
+      "name": "No Operation, do nothing1",
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        784,
+        832
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "boolean": [
+            {
+              "value1": "={{ $json.property_status }}",
+              "value2": "=Not started 🤷‍♂️"
+            },
+            {
+              "value1": "={{ $json.property_scheduled }}",
+              "value2": "=Scheduled"
+            },
+            {
+              "value1": "={{ $json.property_status }}",
+              "operation": "notEqual",
+              "value2": "=Stopped"
+            },
+            {
+              "value1": "={{ $json.property_status }}",
+              "operation": "notEqual",
+              "value2": "=Running"
+            }
+          ]
+        }
+      },
+      "id": "76374e11-d606-4d76-8132-b7d889fc2ffd",
+      "name": "Check if Scheduled",
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 1,
+      "position": [
+        1712,
+        832
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "boolean": [
+            {
+              "value1": "={{ $json.property_ready }}",
+              "value2": true
+            }
+          ]
+        }
+      },
+      "id": "72cd88f3-2a1f-4757-85d8-9a164e1992ce",
+      "name": "Filter Ready",
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 1,
+      "position": [
+        1488,
+        832
+      ]
+    },
+    {
+      "parameters": {
+        "resource": "databasePage",
+        "operation": "getAll",
+        "databaseId": {
+          "__rl": true,
+          "value": "dd62b391-33c1-4718-916c-bfc0e66d909a",
+          "mode": "list",
+          "cachedResultName": "Tasks",
+          "cachedResultUrl": "https://www.notion.so/dd62b39133c14718916cbfc0e66d909a"
+        },
+        "returnAll": true,
+        "options": {
+          "sort": {
+            "sortValue": [
+              {
+                "key": "Action Date|date",
+                "direction": "ascending"
+              }
+            ]
+          }
+        }
+      },
+      "id": "0f837cd9-c972-4c31-88d5-2d4a49437e9e",
+      "name": "Get Tasks Database",
+      "type": "n8n-nodes-base.notion",
+      "typeVersion": 2,
+      "position": [
+        1264,
+        832
+      ],
+      "credentials": {
+        "notionApi": {
+          "id": "Czzo7kSR8UMfEhDY",
+          "name": "5Leaf Notion"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "boolean": [
+            {
+              "value1": "={{ $json.property_repeat }}",
+              "value2": "=Daily"
+            },
+            {
+              "value1": "={{ $json.property_repeat }}",
+              "value2": "=Weekly"
+            },
+            {
+              "value1": "={{ $json.property_repeat }}",
+              "value2": "=Monthly"
+            },
+            {
+              "value1": "={{ $json.property_repeat }}",
+              "value2": "=Yearly"
+            }
+          ]
+        },
+        "combineConditions": "OR"
+      },
+      "id": "972c5391-f4fc-4eb3-866a-cf2a323ba337",
+      "name": "Filter6",
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 1,
+      "position": [
+        2288,
+        512
+      ]
+    },
+    {
+      "parameters": {
+        "batchSize": 1,
+        "options": {}
+      },
+      "id": "84f2262f-0b2c-4f81-b75a-2bac58cdcf2f",
+      "name": "Split In Batches",
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 2,
+      "position": [
+        2528,
+        512
+      ]
+    },
+    {
+      "parameters": {
+        "path": "5f41e71e-bff7-48c3-941d-14656279a3a5",
+        "options": {}
+      },
+      "id": "97543fb4-ef30-4c00-b1d6-a997385ec0f8",
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [
+        544,
+        832
+      ],
+      "webhookId": "5f41e71e-bff7-48c3-941d-14656279a3a5"
+    },
+    {
+      "parameters": {},
+      "id": "8d52118e-3cd3-496d-aa40-cb1f84bc19a7",
+      "name": "Execute Workflow Trigger",
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1,
+      "position": [
+        544,
+        512
+      ]
+    },
+    {
+      "parameters": {
+        "mode": "chooseBranch",
+        "output": "empty"
+      },
+      "id": "9ad82c5f-6b11-4486-9ea0-e7be11de3ca9",
+      "name": "Merge1",
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 2.1,
+      "position": [
+        1040,
+        512
+      ]
+    },
+    {
+      "parameters": {},
+      "id": "28b3a744-d6bf-47c6-a27a-1577217b3081",
+      "name": "No Operation, do nothing",
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        784,
+        512
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "create",
+        "workflowObject": "={{ $json.payload }}",
+        "requestOptions": {}
+      },
+      "id": "68ea22fa-746f-414b-b273-2120679aa2c6",
+      "name": "n8n",
+      "type": "n8n-nodes-base.n8n",
+      "typeVersion": 1,
+      "position": [
+        3520,
+        512
+      ],
+      "credentials": {
+        "n8nApi": {
+          "id": "eA5g6LzOnAqACmSw",
+          "name": "n8n account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "cc5fa72b-646d-4ce5-8db8-44d310527f30",
+              "name": "payload",
+              "value": "={\n\"name\": \"{{ $('Split In Batches').item.json.property_repeat }} ({{ $('Split In Batches').item.json.name }})\",\n  \"meta\": {\n    \"templateCredsSetupCompleted\": true,\n    \"instanceId\": \"3adfecd70950b13f28ed03d4a73be90a3890254a7232b5d00e30c7f590681e17\"\n  },\n  \"nodes\": [\n    {\n      \"parameters\": {\n        \"operation\": \"delete\",\n        \"workflowId\": {\n          \"__rl\": true,\n          \"value\": \"={{ $('Put in Workflow ID').item.json.workflowid }}\",\n          \"mode\": \"id\"\n        }\n      },\n      \"id\": \"a26d4e3a-7ecb-49ee-b6bd-649a600c1fa0\",\n      \"name\": \"n8n1\",\n      \"type\": \"n8n-nodes-base.n8n\",\n      \"typeVersion\": 1,\n      \"position\": [\n        620,\n        440\n      ],\n      \"credentials\": {\n        \"n8nApi\": {\n          \"id\": \"eA5g6LzOnAqACmSw\",\n          \"name\": \"n8n account\"\n        }\n      }\n    },\n    {\n      \"parameters\": {\n        \"path\": \"66218e14-de48-4fbe-81c3-8d2584617b48\",\n        \"options\": {}\n      },\n      \"id\": \"ff6d4b25-19d6-437e-a92b-81f03e8d5412\",\n      \"name\": \"Webhook1\",\n      \"type\": \"n8n-nodes-base.webhook\",\n      \"typeVersion\": 2,\n      \"position\": [\n        260,\n        440\n      ],\n      \"webhookId\": \"66218e14-de48-4fbe-81c3-8d2584617b48\"\n    },\n    {\n      \"parameters\": {\n        \"workflowId\": \"AmzISG9mDgOTpSRH\",\n        \"options\": {}\n      },\n      \"id\": \"e96c2d47-7e04-4608-8c73-4fe114c28a5b\",\n      \"name\": \"Execute Workflow1\",\n      \"type\": \"n8n-nodes-base.executeWorkflow\",\n      \"typeVersion\": 1,\n      \"position\": [\n        440,\n        240\n      ]\n    },\n    {\n      \"parameters\": {\n        \"jsCode\": \"// Retrieve the workflow ID from the environment\\nconst workflowId = $workflow.id;\\n\\n// Construct the payload with the workflow ID\\nconst payload = {\\n  workflowId: workflowId\\n};\\n\\n// Set the payload to a variable\\nreturn [\\n  {\\n    json: payload\\n  }\\n];\"\n      },\n      \"id\": \"500dd4c0-98c8-43d1-ae8c-5fb4e5d46d15\",\n      \"name\": \"Code1\",\n      \"type\": \"n8n-nodes-base.code\",\n      \"typeVersion\": 2,\n      \"position\": [\n        440,\n        440\n      ]\n    },\n    {\n      \"parameters\": {\n        \"rule\": {\n          \"interval\": [\n            {\n              \"field\": \"cronExpression\",\n              \"expression\": \"{{ $json.cronExpression }}\"\n            }\n          ]\n        }\n      },\n      \"id\": \"66c5f4a3-1f60-4b6f-bd3c-cc46dc50f390\",\n      \"name\": \"Interval Trigger\",\n      \"type\": \"n8n-nodes-base.scheduleTrigger\",\n      \"typeVersion\": 1.2,\n      \"position\": [\n        260,\n        240\n      ]\n    }\n  ],\n  \"connections\": {\n    \"Webhook1\": {\n      \"main\": [\n        [\n          {\n            \"node\": \"Code1\",\n            \"type\": \"main\",\n            \"index\": 0\n          }\n        ]\n      ]\n    },\n    \"Code1\": {\n      \"main\": [\n        [\n          {\n            \"node\": \"n8n1\",\n            \"type\": \"main\",\n            \"index\": 0\n          }\n        ]\n      ]\n    },\n    \"Interval Trigger\": {\n      \"main\": [\n        [\n          {\n            \"node\": \"Execute Workflow1\",\n            \"type\": \"main\",\n            \"index\": 0\n          }\n        ]\n      ]\n    }\n  },\n  \"pinData\": {}\n}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "52f3b75d-c113-41cd-a872-e5dd1c9e5135",
+      "name": "Edit Fields",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.3,
+      "position": [
+        3264,
+        512
+      ]
+    },
+    {
+      "parameters": {
+        "filters": {},
+        "requestOptions": {}
+      },
+      "id": "bb0174bb-14ef-44a0-b5df-a3c12dd29e05",
+      "name": "n8n3",
+      "type": "n8n-nodes-base.n8n",
+      "typeVersion": 1,
+      "position": [
+        3792,
+        512
+      ],
+      "credentials": {
+        "n8nApi": {
+          "id": "eA5g6LzOnAqACmSw",
+          "name": "n8n account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "93f0c8a3-1564-43f9-901a-5abaefb58a08",
+              "leftValue": "={{ $json.name }}",
+              "rightValue": "={{ $('Split In Batches').item.json.property_repeat }} ({{ $('Split In Batches').item.json.name }})",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "4d4abe01-2597-4c5f-8731-9671e40915eb",
+      "name": "Filter",
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2,
+      "position": [
+        4048,
+        512
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "activate",
+        "workflowId": {
+          "__rl": true,
+          "value": "={{ $json.id }}",
+          "mode": "id"
+        },
+        "additionalFields": {},
+        "requestOptions": {}
+      },
+      "id": "9fef6365-53c6-4a0b-b99c-9c24a72ae6dd",
+      "name": "n8n2",
+      "type": "n8n-nodes-base.n8n",
+      "typeVersion": 1,
+      "position": [
+        4304,
+        512
+      ],
+      "credentials": {
+        "n8nApi": {
+          "id": "eA5g6LzOnAqACmSw",
+          "name": "n8n account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "1d2232fb-30fb-43f8-8acd-bd38590b7462",
+              "name": "workflowid",
+              "value": "{{ $json[\\\"workflowId\\\"] }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "0cd6069f-89ed-42b7-8d43-b01885f6c2c9",
+      "name": "Put in Workflow ID",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.3,
+      "position": [
+        2784,
+        512
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const repeat = $('Split In Batches').item.json.property_repeat;\nconst minutes = $('Split In Batches').item.json.property_minutes;\nconst hour = $('Split In Batches').item.json.property_hour;\nconst day = $('Split In Batches').item.json.property_day;\nconst month = $('Split In Batches').item.json.property_month;\nconst dayOfWeek = $('Split In Batches').item.json.property_day_of_week;\n\nlet cronExpression = '';\nlet items = [];\n\nswitch (repeat) {\n  case 'Daily':\n    cronExpression = `${minutes} ${hour} * * *`;\n    break;\n  case 'Weekly':\n    cronExpression = `${minutes} ${hour} * * ${dayOfWeek}`;\n    break;\n  case 'Monthly':\n    cronExpression = `${minutes} ${hour} ${day} * *`;\n    break;\n  case 'Yearly':\n    cronExpression = `${minutes} ${hour} ${day} ${month} *`;\n    break;\n  default:\n    cronExpression = `${minutes} ${hour} ${day} ${month} ${dayOfWeek}`;\n    break;\n}\n\nitems.push({ json: { cronExpression: cronExpression } });\n\nreturn items;\n"
+      },
+      "id": "6881719e-adf8-4a4f-b144-f7df1f5dd60c",
+      "name": "Format Cron Expression",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        3024,
+        512
+      ]
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "No Operation, do nothing1": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Merge": {
+      "main": [
+        [
+          {
+            "node": "Get Tasks Database",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter Ready": {
+      "main": [
+        [
+          {
+            "node": "Check if Scheduled",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Tasks Database": {
+      "main": [
+        [
+          {
+            "node": "Filter Ready",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check if Scheduled": {
+      "main": [
+        [
+          {
+            "node": "Execute Workflow",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Filter6",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter6": {
+      "main": [
+        [
+          {
+            "node": "Split In Batches",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split In Batches": {
+      "main": [
+        [
+          {
+            "node": "Split In Batches",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Put in Workflow ID",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "No Operation, do nothing1",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "No Operation, do nothing": {
+      "main": [
+        [
+          {
+            "node": "Merge1",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Execute Workflow Trigger": {
+      "main": [
+        [
+          {
+            "node": "No Operation, do nothing",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Merge1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge1": {
+      "main": [
+        [
+          {
+            "node": "Get Tasks Database",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "n8n",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "n8n": {
+      "main": [
+        [
+          {
+            "node": "n8n3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "n8n3": {
+      "main": [
+        [
+          {
+            "node": "Filter",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter": {
+      "main": [
+        [
+          {
+            "node": "n8n2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Put in Workflow ID": {
+      "main": [
+        [
+          {
+            "node": "Format Cron Expression",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Format Cron Expression": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "2342f89c-9683-42f0-a0f7-5717e263241d",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "3adfecd70950b13f28ed03d4a73be90a3890254a7232b5d00e30c7f590681e17"
+  },
+  "id": "AmzISG9mDgOTpSRH",
+  "tags": []
+}

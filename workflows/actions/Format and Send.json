@@ -1,0 +1,559 @@
+{
+  "name": "Format and Send",
+  "nodes": [
+    {
+      "parameters": {
+        "fromEmail": "=Ben <{{ $json.property_sender }}>",
+        "toEmail": "={{ $json.property_email }}",
+        "subject": "={{ $json.property_callout_0 }}{{ $json.property_mention_0 }}{{ $json.property_subject_1 }}{{ $json.property_callout_1 }}{{ $json.property_mention_1 }}{{  $json.property_subject_2 }}",
+        "text": "={{ $json.property_message_1 }}{{ $json.property_callout_2 }}{{ $json.property_mention_2 }}{{ $json.property_message_2 }}{{ $json.property_callout_3 }}{{ $json.property_mention_3 }}{{ $json.property_message_3 }}",
+        "options": {}
+      },
+      "id": "d8d0c226-a286-4869-ba91-fdc3c99b448b",
+      "name": "Send Email",
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2,
+      "position": [
+        -224,
+        352
+      ],
+      "webhookId": "9dd7a11c-420c-4f4e-a495-edd61eca023e",
+      "credentials": {
+        "smtp": {
+          "id": "tYFbvUdvgs6WArgA",
+          "name": "SMTP account"
+        }
+      },
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "resume": "specificTime",
+        "dateTime": "={{ $json.property_action_date.start }}"
+      },
+      "id": "833c7564-f4e9-4b94-9127-06160ce35756",
+      "name": "Wait2",
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1,
+      "position": [
+        -2176,
+        160
+      ],
+      "webhookId": "8aa9cf0f-27d3-4a57-92fd-9f3855b3e4ea"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "boolean": [
+            {
+              "value1": "={{ $json.property_status }}",
+              "value2": "=Not complete ⚠️"
+            },
+            {
+              "value1": "={{ $json.property_scheduled }}",
+              "value2": "=Scheduled"
+            },
+            {
+              "value1": "={{ $json.property_status }}",
+              "operation": "notEqual",
+              "value2": "=Complete ☑"
+            },
+            {
+              "value1": "={{ $json.property_status }}",
+              "operation": "notEqual",
+              "value2": "=Not started 🤷‍♂️"
+            }
+          ]
+        }
+      },
+      "id": "93121945-c8b2-4b1e-9bfc-5c1e931fabda",
+      "name": "Filter2",
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 1,
+      "position": [
+        -1440,
+        352
+      ]
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "mergeByFields": {
+          "values": [
+            {
+              "field1": "id",
+              "field2": "id"
+            }
+          ]
+        },
+        "outputDataFrom": "input1",
+        "options": {
+          "fuzzyCompare": true
+        }
+      },
+      "id": "8f509548-8630-4a02-816b-eb1c08470dba",
+      "name": "Merge3",
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 2.1,
+      "position": [
+        -976,
+        160
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "boolean": [
+            {
+              "value1": "={{ $json.property_action_date.start }}",
+              "value2": "={{ $('Wait2').item.json.property_action_date.start }}"
+            }
+          ]
+        }
+      },
+      "id": "ca9fd874-fae3-4090-8741-45a91a74d149",
+      "name": "IF",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [
+        -1200,
+        352
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "boolean": [
+            {
+              "value1": "={{ $json.id }}",
+              "value2": "={{ $('Wait2').item.json.id }}"
+            }
+          ]
+        }
+      },
+      "id": "961285a1-14c1-4e0f-afc2-24470f0b31f2",
+      "name": "Filter",
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 1,
+      "position": [
+        -1664,
+        352
+      ]
+    },
+    {
+      "parameters": {},
+      "id": "64b80af8-7e36-4706-bbd8-9bdadc31e3b1",
+      "name": "Execute Workflow Trigger",
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1,
+      "position": [
+        -2400,
+        160
+      ]
+    },
+    {
+      "parameters": {
+        "resource": "databasePage",
+        "operation": "getAll",
+        "databaseId": {
+          "__rl": true,
+          "value": "dd62b391-33c1-4718-916c-bfc0e66d909a",
+          "mode": "list",
+          "cachedResultName": "Tasks",
+          "cachedResultUrl": "https://www.notion.so/dd62b39133c14718916cbfc0e66d909a"
+        },
+        "returnAll": true,
+        "options": {}
+      },
+      "id": "07b20734-f2d4-43f3-a47f-bd41d216bb18",
+      "name": "Check Tasks",
+      "type": "n8n-nodes-base.notion",
+      "typeVersion": 2,
+      "position": [
+        -1888,
+        352
+      ],
+      "credentials": {
+        "notionApi": {
+          "id": "Czzo7kSR8UMfEhDY",
+          "name": "5Leaf Notion"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "databasePage",
+        "operation": "getAll",
+        "databaseId": {
+          "__rl": true,
+          "value": "d7c1239a-182e-4285-92f9-b2443fc85875",
+          "mode": "list",
+          "cachedResultName": "Channels",
+          "cachedResultUrl": "https://www.notion.so/d7c1239a182e428592f9b2443fc85875"
+        },
+        "returnAll": true,
+        "options": {}
+      },
+      "id": "649576f4-7428-49d4-832d-cdace8ed9e60",
+      "name": "Get Channel Database1",
+      "type": "n8n-nodes-base.notion",
+      "typeVersion": 2,
+      "position": [
+        -1888,
+        -16
+      ],
+      "credentials": {
+        "notionApi": {
+          "id": "Czzo7kSR8UMfEhDY",
+          "name": "5Leaf Notion"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "boolean": [
+            {
+              "value1": "={{ $('Execute Workflow Trigger').item.json.property_channel[0] }}",
+              "value2": "={{ $json.id }}"
+            }
+          ]
+        }
+      },
+      "id": "482c6209-2053-40ef-b346-2c3aea2c0e28",
+      "name": "Get Channel",
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 1,
+      "position": [
+        -1664,
+        -16
+      ]
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "combinationMode": "mergeByPosition",
+        "options": {
+          "clashHandling": {
+            "values": {
+              "resolveClash": "preferInput1"
+            }
+          }
+        }
+      },
+      "id": "57238159-fc4f-45ba-9087-e2f754ae2da8",
+      "name": "Merge20",
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 2.1,
+      "position": [
+        -1200,
+        160
+      ]
+    },
+    {
+      "parameters": {
+        "workflowId": "E3nCu36rwqgqIQuA",
+        "options": {}
+      },
+      "id": "fdce4e10-2bc3-45a0-b3b3-5526ee8c2c3c",
+      "name": "Execute Workflow",
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1,
+      "position": [
+        32,
+        160
+      ],
+      "alwaysOutputData": true,
+      "disabled": true,
+      "continueOnFail": true
+    },
+    {
+      "parameters": {
+        "errorMessage": "Action date fields do not Match!"
+      },
+      "id": "4a80b496-cdfc-4ec5-980f-016fe4328fdc",
+      "name": "Stop and Error",
+      "type": "n8n-nodes-base.stopAndError",
+      "typeVersion": 1,
+      "position": [
+        -976,
+        352
+      ]
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "property_channel",
+        "options": {}
+      },
+      "id": "6d8f81ad-27fb-433e-bd76-1f26171dff98",
+      "name": "Item Lists1",
+      "type": "n8n-nodes-base.itemLists",
+      "typeVersion": 3,
+      "position": [
+        -1440,
+        -16
+      ]
+    },
+    {
+      "parameters": {
+        "mode": "chooseBranch",
+        "output": "input2"
+      },
+      "id": "1543a626-79fe-4174-991b-16b91bace47b",
+      "name": "Merge9",
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 2.1,
+      "position": [
+        -224,
+        560
+      ],
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "workflowId": "KECq2MkS7xe1tyk9",
+        "options": {}
+      },
+      "id": "047bfa28-fc84-4eed-8c10-c6576b60be37",
+      "name": "Execute Workflow1",
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1,
+      "position": [
+        32,
+        464
+      ],
+      "alwaysOutputData": true,
+      "disabled": true,
+      "continueOnFail": true
+    },
+    {
+      "parameters": {
+        "workflowId": "6a6gYnQmNAvnO4ws",
+        "options": {}
+      },
+      "id": "ef0bfe7c-d253-4861-9d19-dc3763b515fc",
+      "name": "Execute Workflow2",
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1,
+      "position": [
+        32,
+        672
+      ],
+      "alwaysOutputData": true,
+      "disabled": true,
+      "continueOnFail": true
+    },
+    {
+      "parameters": {
+        "jsCode": "// Assuming $json is an object containing the properties\nlet $json = items[0].json;\n\n// Loop through the properties\nfor (let i = 0; i < 4; i++) {\n    // Check property_mention_i\n    if ($json[`property_mention_${i}`]) {\n        $json[`property_mention_${i}`] = $json.property_person;\n    } else {\n        $json[`property_mention_${i}`] = '';\n    }\n\n    // Check property_callout_i\n    if ($json[`property_callout_${i}`]) {\n        $json[`property_callout_${i}`] = $json.property_channel;\n    } else {\n        $json[`property_callout_${i}`] = '';\n    }\n}\n\n// Pass all data to the next node\nreturn [{json: $json}];"
+      },
+      "id": "ecfc6fa0-676d-42bb-b754-2f533888d8d9",
+      "name": "Code2",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -768,
+        160
+      ]
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Wait2": {
+      "main": [
+        [
+          {
+            "node": "Check Tasks",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Merge20",
+            "type": "main",
+            "index": 1
+          },
+          {
+            "node": "Get Channel Database1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter2": {
+      "main": [
+        [
+          {
+            "node": "IF",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge3": {
+      "main": [
+        [
+          {
+            "node": "Code2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "IF": {
+      "main": [
+        [
+          {
+            "node": "Merge3",
+            "type": "main",
+            "index": 1
+          }
+        ],
+        [
+          {
+            "node": "Stop and Error",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Execute Workflow Trigger": {
+      "main": [
+        [
+          {
+            "node": "Wait2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check Tasks": {
+      "main": [
+        [
+          {
+            "node": "Filter",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Channel Database1": {
+      "main": [
+        [
+          {
+            "node": "Get Channel",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Channel": {
+      "main": [
+        [
+          {
+            "node": "Item Lists1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge20": {
+      "main": [
+        [
+          {
+            "node": "Merge3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Item Lists1": {
+      "main": [
+        [
+          {
+            "node": "Merge20",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter": {
+      "main": [
+        [
+          {
+            "node": "Filter2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send Email": {
+      "main": [
+        [
+          {
+            "node": "Merge9",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge9": {
+      "main": [
+        [
+          {
+            "node": "Execute Workflow1",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Execute Workflow2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code2": {
+      "main": [
+        [
+          {
+            "node": "Send Email",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Merge9",
+            "type": "main",
+            "index": 1
+          },
+          {
+            "node": "Execute Workflow",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "66ea4fcf-3215-481a-bc72-9e69173aa07f",
+  "meta": {
+    "instanceId": "3adfecd70950b13f28ed03d4a73be90a3890254a7232b5d00e30c7f590681e17"
+  },
+  "id": "qF9IJgh7NEZGkZJy",
+  "tags": []
+}

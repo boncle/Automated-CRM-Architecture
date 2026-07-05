@@ -1,0 +1,538 @@
+{
+  "name": "Emails",
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "cf4cdef9-9c10-4d29-a80f-9e0efc0ff138",
+      "name": "No Operation, do nothing1",
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        -1696,
+        800
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "string": [
+            {
+              "value1": "={{ $json[\"property_category\"]}}",
+              "operation": "notEqual",
+              "value2": "={{null}}"
+            }
+          ]
+        }
+      },
+      "id": "2cf136c5-ab5d-45a6-9a12-3a6e43c9e6c0",
+      "name": "IF10",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [
+        -1904,
+        1008
+      ]
+    },
+    {
+      "parameters": {},
+      "id": "1ed5e3e0-e2b8-40a7-a784-dc3e0d41ce29",
+      "name": "Execute Workflow Trigger",
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1,
+      "position": [
+        -2160,
+        1008
+      ]
+    },
+    {
+      "parameters": {
+        "resource": "databasePage",
+        "operation": "getAll",
+        "databaseId": {
+          "__rl": true,
+          "value": "fcc969d3-4f7f-45a7-b82c-75100a87fcc7",
+          "mode": "list",
+          "cachedResultName": "Emails",
+          "cachedResultUrl": "https://www.notion.so/fcc969d34f7f45a7b82c75100a87fcc7"
+        },
+        "returnAll": true,
+        "options": {
+          "sort": {
+            "sortValue": [
+              {
+                "key": "Order sent|select",
+                "direction": "descending"
+              }
+            ]
+          }
+        }
+      },
+      "id": "6a455268-cdef-4dad-a0af-c5bcb40388ae",
+      "name": "Get Emails",
+      "type": "n8n-nodes-base.notion",
+      "typeVersion": 2,
+      "position": [
+        -1648,
+        1008
+      ],
+      "credentials": {
+        "notionApi": {
+          "id": "Czzo7kSR8UMfEhDY",
+          "name": "5Leaf Notion"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "boolean": [
+            {
+              "value1": "={{ $json.property_status }}",
+              "value2": "=Ready"
+            }
+          ]
+        }
+      },
+      "id": "af8c15ab-58e1-4f33-be8e-fc0f0c1eb091",
+      "name": "Filter1",
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 1,
+      "position": [
+        -608,
+        1008
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "boolean": [
+            {
+              "value1": "={{ $json.property_order_sent }}",
+              "operation": "notEqual",
+              "value2": "={{null}}"
+            }
+          ]
+        }
+      },
+      "id": "65fcad90-199c-45f1-8e40-05db1cb25e3a",
+      "name": "IF",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [
+        384,
+        1008
+      ]
+    },
+    {
+      "parameters": {
+        "workflowId": "qF9IJgh7NEZGkZJy",
+        "options": {}
+      },
+      "id": "99ece1d8-dd83-49c4-81e0-abd32945ea88",
+      "name": "Execute Workflow10",
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1,
+      "position": [
+        944,
+        1008
+      ],
+      "alwaysOutputData": true,
+      "continueOnFail": true
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "combinationMode": "mergeByPosition",
+        "options": {
+          "clashHandling": {
+            "values": {
+              "resolveClash": "preferInput1"
+            }
+          }
+        }
+      },
+      "id": "7cb7f4bf-5bde-4d03-98ac-a78b898e5b09",
+      "name": "Merge21",
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 2.1,
+      "position": [
+        128,
+        1008
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "boolean": [
+            {
+              "value1": "={{ $json.property_name_known }}",
+              "value2": true
+            }
+          ],
+          "string": [
+            {
+              "value1": "={{ $('Execute Workflow Trigger').item.json.property_person }}",
+              "operation": "isNotEmpty"
+            }
+          ]
+        }
+      },
+      "id": "d9a7ecc6-402a-4074-84b4-304994702af2",
+      "name": "Filter12",
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 1,
+      "position": [
+        -1088,
+        1152
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "boolean": [
+            {
+              "value1": "={{ $json.property_name_known }}"
+            }
+          ],
+          "string": [
+            {
+              "value1": "={{ $('Execute Workflow Trigger').item.json.property_person }}",
+              "operation": "isEmpty"
+            }
+          ]
+        }
+      },
+      "id": "1c0f609f-b386-4594-a306-18c6c54b2ea8",
+      "name": "IF2",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [
+        -1088,
+        864
+      ]
+    },
+    {
+      "parameters": {},
+      "id": "f385d3eb-8528-473e-9299-253c3fe0bad8",
+      "name": "Merge22",
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 2.1,
+      "position": [
+        -848,
+        1008
+      ]
+    },
+    {
+      "parameters": {
+        "mode": "chooseBranch"
+      },
+      "id": "8b011b5d-278b-4317-8e70-7d32e8324f40",
+      "name": "Merge23",
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 2.1,
+      "position": [
+        128,
+        1280
+      ]
+    },
+    {
+      "parameters": {
+        "workflowId": "6a6gYnQmNAvnO4ws",
+        "options": {}
+      },
+      "id": "033ba4ad-ab9e-4efd-aba6-364eac1fe10c",
+      "name": "Execute Workflow",
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1,
+      "position": [
+        304,
+        1280
+      ],
+      "alwaysOutputData": true,
+      "continueOnFail": true
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "string": [
+            {
+              "value1": "={{ $json.property_message_1 }}",
+              "operation": "notEqual",
+              "value2": "={{ undefined }}"
+            }
+          ]
+        }
+      },
+      "id": "5f2cbc02-a398-4ee4-bb43-31bac78cd367",
+      "name": "IF15",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [
+        672,
+        1008
+      ]
+    },
+    {
+      "parameters": {
+        "content": "## Filter Emails \nFilter emails by **category(WIP)**, which order to be sent and # of emails sent",
+        "height": 190.96414606568064,
+        "width": 315.61531843620685
+      },
+      "id": "26123d49-273b-431d-943b-c27beeb9e5ba",
+      "name": "Sticky Note",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -768,
+        752
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "boolean": [
+            {
+              "value1": "={{ $json.result }}",
+              "value2": true
+            }
+          ]
+        }
+      },
+      "id": "f92a3ef6-e31e-45c3-b768-072b693b5059",
+      "name": "IF16",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [
+        -144,
+        1008
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Retrieve the values from the previous node\nconst propertyOrderSent = $json.property_order_sent;\nconst emailsSent = $('Execute Workflow Trigger').item.json.property_emails_sent;\n\n// Remove the last two characters from propertyOrderSent\nconst trimmedPropertyOrderSent = propertyOrderSent.slice(0, -2);\n\n// Function to check if trimmedPropertyOrderSent is greater than emailsSent by exactly one\nconst isExactlyOneGreater = (trimmedPropertyOrderSent, emailsSent) => {\n  return (parseInt(trimmedPropertyOrderSent, 10) - parseInt(emailsSent, 10)) === 1;\n};\n\n// Call the function with the actual values and store the result\nconst result = isExactlyOneGreater(trimmedPropertyOrderSent, emailsSent);\n\n// Create a new object that includes all previous JSON data and the new result\nconst fullResult = {\n  ...$json, // Spread operator to include all properties from the previous JSON\n  result: result // Add the new result\n};\n\n// Return the full result object\nreturn { json: fullResult };"
+      },
+      "id": "9bef95d2-5ab8-477a-a2bc-9ec33fd094e6",
+      "name": "Filter Emails by # Sent and Order to be Sent",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -368,
+        1008
+      ]
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForEachItem",
+        "jsCode": "// Function to check if the item should be passed based on property_category\nconst shouldPassItemBasedOnCategory = (currentItemCategory, triggerItemCategory) => {\n  return currentItemCategory === triggerItemCategory || \n         (currentItemCategory === '' && triggerItemCategory === '');\n};\n\n// Retrieve the property_category and property.categorized from the trigger item\nconst triggerItem = $('Execute Workflow Trigger').item.json;\nconst triggerItemCategory = triggerItem.property_category;\nconst isCategorized = triggerItem.property_categorized;\n\n// Retrieve the property_category from the current item\nconst currentItemCategory = $json.property_category;\n\n// Check if we should skip the entire operation and just pass the item\nif (isCategorized === false) {\n  // If property.categorized is false, pass the item without further checks\n  return { json: $json };\n} else {\n  // If property.categorized is true, apply the previous logic\n  const passItem = shouldPassItemBasedOnCategory(currentItemCategory, triggerItemCategory);\n\n  // Logic to pass the item or not based on the result\n  if (passItem) {\n    // If the condition is met, return the current item's JSON\n    return { json: $json };\n  } else {\n    // If the condition is not met, return null\n    return null;\n  }\n}"
+      },
+      "id": "cc4e2fd1-6962-4689-83bf-0961f468521a",
+      "name": "Filter Emails by Category",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -1408,
+        1008
+      ]
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "IF10": {
+      "main": [
+        [
+          {
+            "node": "Get Emails",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Merge21",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "No Operation, do nothing1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Execute Workflow Trigger": {
+      "main": [
+        [
+          {
+            "node": "IF10",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Emails": {
+      "main": [
+        [
+          {
+            "node": "Filter Emails by Category",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "IF": {
+      "main": [
+        [
+          {
+            "node": "IF15",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge21": {
+      "main": [
+        [
+          {
+            "node": "IF",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "IF2": {
+      "main": [
+        [
+          {
+            "node": "Merge22",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Filter12",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge22": {
+      "main": [
+        [
+          {
+            "node": "Filter1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter12": {
+      "main": [
+        [
+          {
+            "node": "Merge22",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Filter1": {
+      "main": [
+        [
+          {
+            "node": "Filter Emails by # Sent and Order to be Sent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge23": {
+      "main": [
+        [
+          {
+            "node": "Execute Workflow",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "IF15": {
+      "main": [
+        [
+          {
+            "node": "Execute Workflow10",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Merge23",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "IF16": {
+      "main": [
+        [
+          {
+            "node": "Merge21",
+            "type": "main",
+            "index": 1
+          }
+        ],
+        [
+          {
+            "node": "Merge23",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Filter Emails by # Sent and Order to be Sent": {
+      "main": [
+        [
+          {
+            "node": "IF16",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter Emails by Category": {
+      "main": [
+        [
+          {
+            "node": "IF2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "61294639-4360-4873-af05-b0945a7f7b98",
+  "meta": {
+    "instanceId": "3adfecd70950b13f28ed03d4a73be90a3890254a7232b5d00e30c7f590681e17"
+  },
+  "id": "iHMMNEhPiVMRUt4g",
+  "tags": []
+}

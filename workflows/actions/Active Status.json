@@ -1,0 +1,155 @@
+{
+  "name": "Active Status",
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "85e78c9d-a145-441c-994e-7d38ac528e82",
+      "name": "Execute Workflow Trigger",
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1,
+      "position": [
+        304,
+        352
+      ]
+    },
+    {
+      "parameters": {
+        "resource": "databasePage",
+        "operation": "update",
+        "pageId": {
+          "__rl": true,
+          "value": "={{ $json[\"id\"] }}",
+          "mode": "id"
+        },
+        "propertiesUi": {
+          "propertyValues": [
+            {
+              "key": "Status|status",
+              "statusValue": "Not active"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "65293e34-466d-44a0-ac09-039c852ef849",
+      "name": "Update Active",
+      "type": "n8n-nodes-base.notion",
+      "typeVersion": 2,
+      "position": [
+        1200,
+        352
+      ],
+      "credentials": {
+        "notionApi": {
+          "id": "Czzo7kSR8UMfEhDY",
+          "name": "5Leaf Notion"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "databasePage",
+        "operation": "getAll",
+        "databaseId": {
+          "__rl": true,
+          "value": "7445a660-1371-4b2a-8704-bf55945d6042",
+          "mode": "list",
+          "cachedResultName": "People",
+          "cachedResultUrl": "https://www.notion.so/7445a66013714b2a8704bf55945d6042"
+        },
+        "returnAll": true,
+        "options": {}
+      },
+      "id": "9b2e2278-fc45-427b-9a48-cdc9e0a6b67d",
+      "name": "Get People Database",
+      "type": "n8n-nodes-base.notion",
+      "typeVersion": 2,
+      "position": [
+        624,
+        512
+      ],
+      "credentials": {
+        "notionApi": {
+          "id": "Czzo7kSR8UMfEhDY",
+          "name": "5Leaf Notion"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "mergeByFields": {
+          "values": [
+            {
+              "field1": "property_related_people",
+              "field2": "id"
+            }
+          ]
+        },
+        "outputDataFrom": "input2",
+        "options": {
+          "fuzzyCompare": true
+        }
+      },
+      "id": "3f587704-afa5-4731-b49c-7e3c5cd4bcf6",
+      "name": "Find Related People Between Databases",
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 2.1,
+      "position": [
+        960,
+        352
+      ]
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Execute Workflow Trigger": {
+      "main": [
+        [
+          {
+            "node": "Get People Database",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Find Related People Between Databases",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get People Database": {
+      "main": [
+        [
+          {
+            "node": "Find Related People Between Databases",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Find Related People Between Databases": {
+      "main": [
+        [
+          {
+            "node": "Update Active",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "04035a9c-b9ca-4436-afbf-b79c85ad9657",
+  "meta": {
+    "instanceId": "3adfecd70950b13f28ed03d4a73be90a3890254a7232b5d00e30c7f590681e17"
+  },
+  "id": "6a6gYnQmNAvnO4ws",
+  "tags": []
+}

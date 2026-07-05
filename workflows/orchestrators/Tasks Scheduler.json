@@ -1,0 +1,456 @@
+{
+  "name": "Tasks Scheduler",
+  "nodes": [
+    {
+      "parameters": {
+        "dataType": "boolean",
+        "value1": "={{ $json.property_repeat }}",
+        "rules": {
+          "rules": [
+            {
+              "value2": "=Daily"
+            },
+            {
+              "value2": "=Weekly",
+              "output": 1
+            },
+            {
+              "value2": "=Monthly",
+              "output": 2
+            },
+            {
+              "value2": "=Yearly",
+              "output": 3
+            }
+          ]
+        }
+      },
+      "id": "7d28d268-e4a9-4580-a0b9-e52d64c15cbb",
+      "name": "Switch",
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 1,
+      "position": [
+        304,
+        368
+      ]
+    },
+    {
+      "parameters": {
+        "unit": "days"
+      },
+      "id": "ce265360-9b8d-4973-9137-318d5c97efd1",
+      "name": "Daily",
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1,
+      "position": [
+        592,
+        128
+      ],
+      "webhookId": "0547ef4c-70f6-4e28-a66d-31cbd1d3517c"
+    },
+    {
+      "parameters": {
+        "amount": 7,
+        "unit": "days"
+      },
+      "id": "02905ac5-1d3c-4738-b58e-9d9e734486bb",
+      "name": "Weekly",
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1,
+      "position": [
+        592,
+        288
+      ],
+      "webhookId": "70627d5e-abcd-45b8-ab34-dd57427a6716"
+    },
+    {
+      "parameters": {
+        "amount": 30,
+        "unit": "days"
+      },
+      "id": "962b072b-7ce9-484e-9628-bdd77e75796f",
+      "name": "Monthly",
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1,
+      "position": [
+        592,
+        448
+      ],
+      "webhookId": "b4c94401-498b-4b97-b333-1004cf0325ee"
+    },
+    {
+      "parameters": {
+        "amount": 365,
+        "unit": "days"
+      },
+      "id": "66599bf3-7c2a-44af-9e43-a61221f49e56",
+      "name": "Yearly",
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1,
+      "position": [
+        592,
+        624
+      ],
+      "webhookId": "889043fd-c949-41b1-810f-2c60c66b7ab3"
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "combinationMode": "mergeByPosition",
+        "options": {}
+      },
+      "id": "78aceb62-0d5e-45e9-a911-7feeced922de",
+      "name": "Merge21",
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 2.1,
+      "position": [
+        848,
+        544
+      ]
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "combinationMode": "mergeByPosition",
+        "options": {}
+      },
+      "id": "e5dd089d-fec5-44e2-b46e-080e188acf8c",
+      "name": "Merge4",
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 2.1,
+      "position": [
+        848,
+        208
+      ]
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "combinationMode": "mergeByPosition",
+        "options": {}
+      },
+      "id": "357f7088-3c78-4998-a776-cffea817acb4",
+      "name": "Merge1",
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 2.1,
+      "position": [
+        1072,
+        368
+      ],
+      "alwaysOutputData": false
+    },
+    {
+      "parameters": {
+        "resource": "databasePage",
+        "operation": "getAll",
+        "databaseId": {
+          "__rl": true,
+          "value": "dd62b391-33c1-4718-916c-bfc0e66d909a",
+          "mode": "list",
+          "cachedResultName": "Tasks",
+          "cachedResultUrl": "https://www.notion.so/dd62b39133c14718916cbfc0e66d909a"
+        },
+        "returnAll": true,
+        "options": {}
+      },
+      "id": "53ca2ebb-4094-4bec-a649-2e93e00fd4d6",
+      "name": "Check Tasks",
+      "type": "n8n-nodes-base.notion",
+      "typeVersion": 2,
+      "position": [
+        1312,
+        544
+      ],
+      "credentials": {
+        "notionApi": {
+          "id": "Czzo7kSR8UMfEhDY",
+          "name": "5Leaf Notion"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "boolean": [
+            {
+              "value1": "={{ $json.property_ready }}",
+              "value2": true
+            }
+          ]
+        }
+      },
+      "id": "58ebde2b-7a4e-477d-8253-1e670335b78c",
+      "name": "Filter Ready",
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 1,
+      "position": [
+        1632,
+        544
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "boolean": [
+            {
+              "value1": "={{ $json.property_status }}",
+              "value2": "=Not complete ⚠️"
+            },
+            {
+              "value1": "={{ $json.property_scheduled }}",
+              "value2": "=Scheduled"
+            },
+            {
+              "value1": "={{ $json.property_status }}",
+              "operation": "notEqual",
+              "value2": "=Complete ☑"
+            },
+            {
+              "value1": "={{ $json.property_status }}",
+              "operation": "notEqual",
+              "value2": "=Not started 🤷‍♂️"
+            }
+          ]
+        }
+      },
+      "id": "dd4b2f5a-fb4e-4511-94a7-701d69f649c6",
+      "name": "Filter2",
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 1,
+      "position": [
+        1920,
+        544
+      ]
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "mergeByFields": {
+          "values": [
+            {
+              "field1": "id",
+              "field2": "id"
+            }
+          ]
+        },
+        "outputDataFrom": "input2",
+        "options": {
+          "fuzzyCompare": true
+        }
+      },
+      "id": "31488a4e-daf4-444d-b01d-b9ee6f3e367e",
+      "name": "Merge3",
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 2.1,
+      "position": [
+        2192,
+        368
+      ]
+    },
+    {
+      "parameters": {
+        "workflowId": "fZfffYwnyyuLLd8E",
+        "options": {}
+      },
+      "id": "4d7f049b-eecb-4d28-97a9-e3a1ee3250e2",
+      "name": "Execute Workflow1",
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1,
+      "position": [
+        2448,
+        272
+      ]
+    },
+    {
+      "parameters": {
+        "workflowId": "3TCJgBAAEwHVuvRl",
+        "options": {}
+      },
+      "id": "3b608c56-c9bc-442e-a983-868a38997a0f",
+      "name": "Execute Workflow",
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1,
+      "position": [
+        2448,
+        448
+      ]
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Switch": {
+      "main": [
+        [
+          {
+            "node": "Daily",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Weekly",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Monthly",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Yearly",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Daily": {
+      "main": [
+        [
+          {
+            "node": "Merge4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Weekly": {
+      "main": [
+        [
+          {
+            "node": "Merge4",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Monthly": {
+      "main": [
+        [
+          {
+            "node": "Merge21",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Yearly": {
+      "main": [
+        [
+          {
+            "node": "Merge21",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Merge21": {
+      "main": [
+        [
+          {
+            "node": "Merge1",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Merge4": {
+      "main": [
+        [
+          {
+            "node": "Merge1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge1": {
+      "main": [
+        [
+          {
+            "node": "Check Tasks",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Merge3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check Tasks": {
+      "main": [
+        [
+          {
+            "node": "Filter Ready",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter Ready": {
+      "main": [
+        [
+          {
+            "node": "Filter2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter2": {
+      "main": [
+        [
+          {
+            "node": "Merge3",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Merge3": {
+      "main": [
+        [
+          {
+            "node": "Execute Workflow1",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Execute Workflow",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "61f3daf0-5d35-483b-a727-fbf93ff5fecd",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "3adfecd70950b13f28ed03d4a73be90a3890254a7232b5d00e30c7f590681e17"
+  },
+  "id": "3TCJgBAAEwHVuvRl",
+  "tags": []
+}

@@ -1,0 +1,136 @@
+{
+  "name": "Update Status",
+  "nodes": [
+    {
+      "parameters": {
+        "resource": "databasePage",
+        "operation": "update",
+        "pageId": {
+          "__rl": true,
+          "value": "={{ $json[\"id\"] }}",
+          "mode": "id"
+        },
+        "propertiesUi": {
+          "propertyValues": [
+            {
+              "key": "Status|status",
+              "statusValue": "Complete ☑"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "7e2f3026-55fd-46c2-a49c-e499be2f94c2",
+      "name": "Notion1",
+      "type": "n8n-nodes-base.notion",
+      "typeVersion": 2,
+      "position": [
+        1120,
+        512
+      ],
+      "credentials": {
+        "notionApi": {
+          "id": "Czzo7kSR8UMfEhDY",
+          "name": "5Leaf Notion"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "id": "3f191f6f-8c2a-4ea7-b12a-8fc1980a52e0",
+      "name": "Execute Workflow Trigger",
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1,
+      "position": [
+        528,
+        512
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "boolean": [
+            {
+              "value1": "={{ $json.property_repeat }}",
+              "value2": "=Daily"
+            },
+            {
+              "value1": "={{ $json.property_repeat }}",
+              "value2": "=Weekly"
+            },
+            {
+              "value1": "={{ $json.property_repeat }}",
+              "value2": "=Monthly"
+            },
+            {
+              "value1": "={{ $json.property_repeat }}",
+              "value2": "=Yearly"
+            }
+          ]
+        },
+        "combineOperation": "any"
+      },
+      "id": "b417534c-4ccc-4bd3-835f-a38255c1807a",
+      "name": "IF",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [
+        832,
+        512
+      ]
+    },
+    {
+      "parameters": {},
+      "id": "34a63fd6-4f79-4744-8dd3-0caba31e77f0",
+      "name": "No Operation, do nothing",
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        1120,
+        304
+      ]
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Execute Workflow Trigger": {
+      "main": [
+        [
+          {
+            "node": "IF",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "IF": {
+      "main": [
+        [
+          {
+            "node": "No Operation, do nothing",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Notion1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "2f9b6693-7708-4789-bcf1-8ca67ac0a279",
+  "meta": {
+    "instanceId": "3adfecd70950b13f28ed03d4a73be90a3890254a7232b5d00e30c7f590681e17"
+  },
+  "id": "E3nCu36rwqgqIQuA",
+  "tags": []
+}

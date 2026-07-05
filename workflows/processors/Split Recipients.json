@@ -1,0 +1,699 @@
+{
+  "name": "Split Recipients",
+  "nodes": [
+    {
+      "parameters": {
+        "fieldToSplitOut": "property_related_people",
+        "include": "allOtherFields",
+        "options": {}
+      },
+      "id": "f37c5f88-440f-4a2f-9f00-d8d010bf7399",
+      "name": "Item Lists",
+      "type": "n8n-nodes-base.itemLists",
+      "typeVersion": 3,
+      "position": [
+        848,
+        832
+      ]
+    },
+    {
+      "parameters": {
+        "batchSize": 1,
+        "options": {
+          "reset": false
+        }
+      },
+      "id": "523a9f48-969f-47d8-969f-14f580f6e822",
+      "name": "Split In Batches",
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 2,
+      "position": [
+        2192,
+        832
+      ]
+    },
+    {
+      "parameters": {
+        "workflowId": "sczU2uA24TVnmqEu",
+        "options": {}
+      },
+      "id": "4bceab3f-959a-4076-9b64-ad6ad4afcb4c",
+      "name": "Execute Workflow",
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1,
+      "position": [
+        3088,
+        832
+      ],
+      "alwaysOutputData": true,
+      "continueOnFail": true
+    },
+    {
+      "parameters": {},
+      "id": "5c2b2bbb-4706-4834-acf6-8d5bcce54443",
+      "name": "Execute Workflow Trigger",
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1,
+      "position": [
+        -640,
+        592
+      ]
+    },
+    {
+      "parameters": {
+        "resource": "databasePage",
+        "operation": "getAll",
+        "databaseId": {
+          "__rl": true,
+          "value": "7445a660-1371-4b2a-8704-bf55945d6042",
+          "mode": "list",
+          "cachedResultName": "People",
+          "cachedResultUrl": "https://www.notion.so/7445a66013714b2a8704bf55945d6042"
+        },
+        "returnAll": true,
+        "options": {
+          "sort": {
+            "sortValue": [
+              {
+                "key": "Emails sent|number",
+                "direction": "ascending"
+              }
+            ]
+          }
+        }
+      },
+      "id": "cd3370e9-fd72-4601-9143-8e14c30f0ba8",
+      "name": "Get People Database2",
+      "type": "n8n-nodes-base.notion",
+      "typeVersion": 2,
+      "position": [
+        848,
+        320
+      ],
+      "credentials": {
+        "notionApi": {
+          "id": "Czzo7kSR8UMfEhDY",
+          "name": "5Leaf Notion"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "values": {
+          "string": [
+            {
+              "name": "=property_related_people",
+              "value": "={{ $('Item Lists4').item.json.id }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "6ebb2f1a-9d80-43c6-85c7-22746ab61b1c",
+      "name": "Set",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 2,
+      "position": [
+        2112,
+        320
+      ]
+    },
+    {
+      "parameters": {
+        "keys": {
+          "key": [
+            {
+              "currentKey": "id",
+              "newKey": "property_related_people"
+            }
+          ]
+        },
+        "additionalOptions": {}
+      },
+      "id": "0b878b24-e430-4fbe-8e14-b3f2dd915eaf",
+      "name": "Rename Keys",
+      "type": "n8n-nodes-base.renameKeys",
+      "typeVersion": 1,
+      "position": [
+        1840,
+        320
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "limit"
+      },
+      "id": "1a2fa229-2e53-4b3c-8089-aed2e7a508a2",
+      "name": "Item Lists2",
+      "type": "n8n-nodes-base.itemLists",
+      "typeVersion": 3,
+      "position": [
+        1328,
+        320
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "string": [
+            {
+              "value1": "={{ $json.property_related_people }}",
+              "value2": "={{ null }}"
+            },
+            {
+              "value1": "={{ $json.property_related_people }}",
+              "operation": "isEmpty"
+            }
+          ]
+        },
+        "combineOperation": "any"
+      },
+      "id": "dfa5608e-8425-4b3d-8093-90d268c7dd3c",
+      "name": "IF10",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [
+        448,
+        592
+      ]
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "combinationMode": "mergeByPosition",
+        "options": {
+          "clashHandling": {
+            "values": {
+              "resolveClash": "preferInput1"
+            }
+          }
+        }
+      },
+      "id": "fd83f68e-2a82-43ad-9668-40b82142882d",
+      "name": "Merge",
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 2.1,
+      "position": [
+        2448,
+        592
+      ]
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "id",
+        "options": {}
+      },
+      "id": "97c23ead-50f2-4616-8cd8-e41c324ce60d",
+      "name": "Item Lists4",
+      "type": "n8n-nodes-base.itemLists",
+      "typeVersion": 3,
+      "position": [
+        1584,
+        320
+      ]
+    },
+    {
+      "parameters": {
+        "workflowId": "sczU2uA24TVnmqEu",
+        "options": {}
+      },
+      "id": "3bc78f0c-44bb-4fd7-9ed5-b608e474f8c0",
+      "name": "Execute Workflow1",
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1,
+      "position": [
+        3088,
+        592
+      ],
+      "alwaysOutputData": true,
+      "continueOnFail": true
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "string": [
+            {
+              "value1": "={{ $json.property_loop_of_times }}",
+              "value2": "={{ null }}"
+            }
+          ]
+        }
+      },
+      "id": "229afdad-ad6b-4ed8-8c2a-15454d6fb20c",
+      "name": "IF",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [
+        -288,
+        592
+      ]
+    },
+    {
+      "parameters": {},
+      "id": "71e7a45b-e567-4755-a8ba-bdb8d8ee1f25",
+      "name": "Merge1",
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 2.1,
+      "position": [
+        80,
+        592
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "number": [
+            {
+              "value1": "={{$runIndex}}",
+              "value2": "={{ $json.property_loop_of_times }}"
+            }
+          ]
+        }
+      },
+      "name": "IF2",
+      "type": "n8n-nodes-base.if",
+      "position": [
+        -288,
+        320
+      ],
+      "typeVersion": 1,
+      "id": "f5ad62ea-dcb0-4416-9f0a-8af584259eab"
+    },
+    {
+      "parameters": {},
+      "id": "2e49186f-83ee-4aea-9f8f-2edd0e538f1a",
+      "name": "Passthrough",
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        2768,
+        592
+      ]
+    },
+    {
+      "parameters": {},
+      "id": "aba031fa-626f-4959-ae60-cf588e6e1247",
+      "name": "Passthrough1",
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        2768,
+        832
+      ]
+    },
+    {
+      "parameters": {
+        "values": {
+          "string": [
+            {
+              "name": "=property_related_people",
+              "value": "={{ [] }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "a0902dd9-aa0e-44c7-9ce0-442dc439b839",
+      "name": "Set1",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 2,
+      "position": [
+        -640,
+        320
+      ]
+    },
+    {
+      "parameters": {
+        "functionCode": "let results = [],\n  i = 0;\n\ndo {\n  try {\n    results = results.concat($items(\"Item Lists\", 0, i));\n  } catch (error) {\n    return results;\n  }\n  i++;\n} while (true);"
+      },
+      "name": "Merge Loop Data",
+      "type": "n8n-nodes-base.function",
+      "typeVersion": 1,
+      "position": [
+        1488,
+        832
+      ],
+      "id": "adecaa30-d5f1-49ca-bed6-84befc13df87"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "string": [
+            {
+              "value1": "={{ $json.property_related_people }}",
+              "value2": "={{ null }}"
+            },
+            {
+              "value1": "={{ $json.property_related_people }}",
+              "operation": "isEmpty"
+            }
+          ]
+        },
+        "combineOperation": "any"
+      },
+      "id": "8e595de9-d261-431d-9d8b-8c31bb63b0d7",
+      "name": "IF11",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [
+        448,
+        320
+      ]
+    },
+    {
+      "parameters": {},
+      "id": "999d55c6-a50b-4ea8-9f77-8fd9f7a8026d",
+      "name": "Done",
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        848,
+        144
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "boolean": [
+            {
+              "value1": "={{ $json.property_status }}",
+              "value2": "=Not active"
+            }
+          ]
+        }
+      },
+      "id": "4c165c52-ac69-441d-bc7a-cd1537d5d2d9",
+      "name": "Filter Active",
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 1,
+      "position": [
+        1088,
+        320
+      ]
+    },
+    {
+      "parameters": {
+        "resource": "databasePage",
+        "operation": "update",
+        "pageId": {
+          "__rl": true,
+          "value": "={{ $json[\"id\"] }}",
+          "mode": "id"
+        },
+        "propertiesUi": {
+          "propertyValues": [
+            {
+              "key": "Status|status",
+              "statusValue": "Active"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "94aa1065-33c5-4e7b-99ac-1e05c2668f16",
+      "name": "Update Active",
+      "type": "n8n-nodes-base.notion",
+      "typeVersion": 2,
+      "position": [
+        1584,
+        144
+      ],
+      "credentials": {
+        "notionApi": {
+          "id": "Czzo7kSR8UMfEhDY",
+          "name": "5Leaf Notion"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Item Lists": {
+      "main": [
+        [
+          {
+            "node": "IF2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split In Batches": {
+      "main": [
+        [
+          {
+            "node": "Passthrough1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Execute Workflow Trigger": {
+      "main": [
+        [
+          {
+            "node": "IF",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get People Database2": {
+      "main": [
+        [
+          {
+            "node": "Filter Active",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Rename Keys": {
+      "main": [
+        [
+          {
+            "node": "Set",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Item Lists2": {
+      "main": [
+        [
+          {
+            "node": "Item Lists4",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Update Active",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "IF10": {
+      "main": [
+        [
+          {
+            "node": "Get People Database2",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
+          }
+        ],
+        [
+          {
+            "node": "Item Lists",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge": {
+      "main": [
+        [
+          {
+            "node": "Passthrough",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Item Lists4": {
+      "main": [
+        [
+          {
+            "node": "Rename Keys",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "IF": {
+      "main": [
+        [
+          {
+            "node": "Merge1",
+            "type": "main",
+            "index": 1
+          }
+        ],
+        [
+          {
+            "node": "IF2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge1": {
+      "main": [
+        [
+          {
+            "node": "IF10",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "IF2": {
+      "main": [
+        [
+          {
+            "node": "Merge1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "IF11",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Passthrough": {
+      "main": [
+        [
+          {
+            "node": "Set1",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Execute Workflow1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Passthrough1": {
+      "main": [
+        [
+          {
+            "node": "Split In Batches",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Execute Workflow",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set1": {
+      "main": [
+        [
+          {
+            "node": "IF2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge Loop Data": {
+      "main": [
+        [
+          {
+            "node": "Split In Batches",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "IF11": {
+      "main": [
+        [
+          {
+            "node": "Done",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Merge Loop Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter Active": {
+      "main": [
+        [
+          {
+            "node": "Item Lists2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "2f4d9641-bf4a-4f2d-b169-8c9af4a3a76d",
+  "meta": {
+    "instanceId": "3adfecd70950b13f28ed03d4a73be90a3890254a7232b5d00e30c7f590681e17"
+  },
+  "id": "reXzQx16mYlnGwfI",
+  "tags": []
+}
