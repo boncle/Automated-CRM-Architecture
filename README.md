@@ -1,26 +1,26 @@
 # Automated CRM & Workflow Architecture
 
-## 📌 Project Overview
-This project is a custom-built Customer Relationship Management (CRM) system designed to centralize client data and automate repetitive communication workflows. The architecture relies on REST API integrations and webhook triggers to eliminate manual data entry and ensure real-time data synchronization.
+A decoupled, event-driven system built with Notion and n8n.
 
-## 🛠️ Technology Stack
-*   **Database:** Notion API
-*   **Workflow Engine:** n8n (Node-based automation)
-*   **Data Parsing:** JSON
-*   **Integration:** REST APIs, Webhooks
+## 🤔 Why I Built This
+About three years ago, I got really curious about how CRMs and automated email outreach systems actually worked behind the scenes. 
 
-## 🏗️ System Architecture & Logic
-Rather than relying on out-of-the-box software, this CRM was built from the ground up to allow for complete backend control over the data pipeline.
+Since I already run my own self-hosted server environment and like tinkering with n8n automations, I decided to build my own CRM from scratch just to experiment with the concept. 
 
-1.  **Data Centralization (Notion API):** 
-    *   Client data, interaction logs, and project statuses are housed in a structured Notion database. 
-    *   REST APIs are used to query, update, and append new records programmatically.
-2.  **Workflow Automation (n8n):**
-    *   n8n serves as the integration layer. It listens for specific webhook triggers (e.g., a status change in the database or an external form submission).
-    *   Upon triggering, n8n parses the incoming JSON payload and executes conditional logic routing.
-3.  **Automated Execution (Email & Sync):**
-    *   Based on the parsed data, the system automatically dispatches customized emails to clients and updates internal IoT devices without human intervention.
+I built the logic completely intuitively—using Notion tables to organize people and tasks, splitting the automations into smaller workflows so they wouldn't break, processing records one by one to avoid crashing the system, and auto-filling email templates based on database updates. It started as a hands-on learning project just to see if I could figure out how to build a fully working system on my own.
 
-## 🔒 Security & Error Handling
-*   **Credential Management:** No API keys or passwords are hardcoded into the workflows. All authentication is handled securely via environment variables and encrypted credential managers within the n8n environment.
-*   **Error Logging:** Workflows are designed with fault tolerance. Failed API calls are caught and logged rather than causing silent system crashes, ensuring high reliability.
+-----
+
+## 🏗️ Architecture
+This system utilizes a modular, microservice approach:
+- **Orchestration Layer:** Daily and Tasks Schedulers manage event timing.
+- **Processing Layer:** Logic modules handle batch splitting and relational database joins.
+- **Execution Layer:** Notion API triggers and SMTP email actions.
+
+## 💡 Engineering Highlights
+- **Governor Limit Awareness:** Batch processing (batch size: 1) to ensure system stability.
+- **Decoupled Logic:** Sub-workflow orchestration to maintain clean, scalable code.
+- **Relational Data Management:** Fuzzy comparison logic for multi-database lookups.
+
+## 📂 Repository Contents
+- `/workflows` contains the modular n8n JSON exports.
